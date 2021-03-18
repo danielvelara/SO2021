@@ -1,27 +1,25 @@
-#include <stdio.h>
 #include <signal.h>
+#include <stdio.h>
 #include <unistd.h>
 
-int sigVar = 0;
 
-void signalHandler(int sig)
-{
-    printf("Starting %d\n", sig);
-    sigVar = 1;
+int globalStatus;
+
+void signalHandler(int sig){
+	printf("Recibe signal %d\n", sig);
+	globalStatus = sig;
 }
 
-int main()
-{
-    signal(2, signalHandler);
-    while (1)
-    {
-        printf("Working\n");
-        if (sigVar == 1)
-        {
-            break;
-        }
-        sleep(1);
-    }
-    printf("Finished\n");
-    return 0;
-}
+int main(){
+	signal(2,signalHandler);
+	while(1){
+		printf("Trabajando...\n");
+		if(globalStatus == 2 || globalStatus == 15){
+			printf("Ya voy a terminar \n");
+			break;
+		}
+		sleep(1);
+	}
+
+	return 0;
+} 
